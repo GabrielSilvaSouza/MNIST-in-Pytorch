@@ -86,7 +86,34 @@ In this step, we are going to build a class in which will perform the preparatio
    ```
 3. Create a class (called `customMNISTDataset` or, again, whatever name you like) and implement the methods `def __init__()`, `def __len__()`, `def __getitem__()`. These methods are essential(*exactly as written*) for our purposes and enable our custom dataset to seamlessly integrate with PyTorch's data loading utilities like DataLoader.
    1. This class will inherit some aspects from the PyTorch `Dataset` class in order to facilitate data handling and transformations.
-   2. 
+   2. `__init__()`: This constructor is used to initialize the dataset and prepare it for use.
+   ```python
+       def __init__(self, csv_file, transform=None):
+        data = pd.read_csv(csv_file)
+        self.labels = data['label'].values.astype(int)
+        self.images = data.drop('label', axis=1).values.astype(float)
+        self.transform = transform
+   ```
+   In the second line, we use pandas(pd) to load the data and perform preprocessing. After that, the code extract the labels of each pixel with `self.labels = data['label'].values.astype(int)`, returning a 1-D array. In `self.images = data.drop('label', axis=1).values.astype(float)`, the pixels columns are taken by droping the column label - notice that since the label are destined to numbers classification between 0-9 (in the sets of natural numbers), it must be *integet(int)*.
+   3. `__len__()`: This constructor just returns the lenght of the dataset. It is useful though, because our Dataloader(which will be explained later) will use it.
+    ```python
+    def __len__(self):
+        return len(self.labels)
+   ```
+    4. `__getitem__()`: This method is responsible for retrieving a specific sample from your dataset given an index. Besides, it allows us to apply some useful operations such as data conversion, reshaping and transforms. It returns a dict or tuple with the label and its respective pixels(image).
+   ```python
+    def __getitem__(self, idx):
+        image = self.images[idx].reshape(28, 28).astype(np.float32)  
+        label = self.labels[idx]
+
+        if self.transform:
+            image = self.transform(image)
+
+        return image, label
+   ```
+
+   
+   
 
 
 
