@@ -84,7 +84,7 @@ In this step, we are going to build a class in which will perform the preparatio
     import torch
     from torch.utils.data import Dataset
    ```
-3. Create a class (called `customMNISTDataset` or, again, whatever name you like) and the functions `def __init__()`, `def __len__()`, `def __getitem__()`.
+3. Create a class (called `customMNISTDataset` or, again, whatever name you like) and implement the methods `def __init__()`, `def __len__()`, `def __getitem__()`. These methods are essential(*exactly as written*) for our purposes and enable our custom dataset to seamlessly integrate with PyTorch's data loading utilities like DataLoader.
    1. This class will inherit some aspects from the PyTorch `Dataset` class in order to facilitate data handling and transformations.
    2. 
 
